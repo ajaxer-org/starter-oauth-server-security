@@ -28,7 +28,7 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: Publish package
-        run: mvn deploy --settings ${{ github.workspace }}/settings.xml
+        run: mvn deploy --settings ${{ github.workspace }}/settings.xml --no-transfer-progress
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
