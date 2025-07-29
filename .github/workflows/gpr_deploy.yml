@@ -1,0 +1,48 @@
+name: Deploy Maven Package to GitHub Packages
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Publish package
+        run: mvn deploy --settings ${{ github.workspace }}/settings.xml --no-transfer-progress
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload build log (optional)
+        if: failure()
+        run: |
+          mkdir -p build-logs
+          cp -r ~/.m2/repository/com build-logs/
+          tar -czf build-logs.tar.gz build-logs
+          echo "Check logs in artifact"
+        continue-on-error: true
+
+      - name: Upload artifact (optional)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: build-logs.tar.gz
