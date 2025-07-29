@@ -42,7 +42,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/ajaxer-developers/starter-oauth-server-security</url>
+            <url>https://maven.pkg.github.com/ajaxer-org/starter-oauth-server-security</url>
         </repository>
     </distributionManagement>
 
