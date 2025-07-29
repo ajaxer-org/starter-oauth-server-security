@@ -3,7 +3,6 @@ name: Deploy Maven Package to GitHub Packages
 on:
   push:
     branches:
-      - development
       - master
 
 permissions:
